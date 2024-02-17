@@ -6,7 +6,7 @@ namespace App\Lesson01\Rotate\tests;
 
 use App\Lesson01\Rotate\Direction;
 use App\Lesson01\Rotate\Rotatable;
-use App\Lesson01\Rotate\Rotate;
+use App\Lesson01\Rotate\RotateCommand;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +28,7 @@ final class RotateTest extends TestCase
             ->method('setDirection')
             ->with(self::equalTo($targetDirection));
 
-        $rotate = new Rotate($rotatable);
+        $rotate = new RotateCommand($rotatable);
         $rotate->execute();
     }
 
@@ -39,7 +39,7 @@ final class RotateTest extends TestCase
         $rotatable = $this->createMock(Rotatable::class);
         $rotatable->method('getDirection')->will(self::throwException(new Exception()));
 
-        $rotate = new Rotate($rotatable);
+        $rotate = new RotateCommand($rotatable);
         $rotate->execute();
     }
 
@@ -50,7 +50,7 @@ final class RotateTest extends TestCase
         $rotatable = $this->createMock(Rotatable::class);
         $rotatable->method('getAngularVelocity')->will(self::throwException(new Exception()));
 
-        $rotate = new Rotate($rotatable);
+        $rotate = new RotateCommand($rotatable);
         $rotate->execute();
     }
 
@@ -63,7 +63,7 @@ final class RotateTest extends TestCase
         $rotatable->method('getAngularVelocity')->willReturn(6);
         $rotatable->method('setDirection')->will(self::throwException(new Exception()));
 
-        $rotate = new Rotate($rotatable);
+        $rotate = new RotateCommand($rotatable);
         $rotate->execute();
     }
 }

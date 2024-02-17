@@ -8,6 +8,7 @@ up: docker-up
 down: docker-down
 restart: down up
 
+
 # Linter and code-style
 lint: app-lint
 analyze: app-analyze

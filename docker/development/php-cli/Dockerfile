@@ -1,8 +1,4 @@
-FROM php:8.2-cli-alpine
-
-RUN apk update  \
-    && apk add --no-cache linux-headers unzip bash coreutils git zip libzip-dev \
-    && apk del git
+FROM php:8.3-cli-alpine
 
 RUN mv $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
 

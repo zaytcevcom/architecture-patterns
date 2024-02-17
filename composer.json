@@ -1,10 +1,12 @@
 {
   "name": "zaytevcom/architecture-patterns",
-  "description": "",
+  "description": "Architecture and Design Patterns",
   "type": "project",
+  "license": "MIT",
   "authors": [
     {
-      "name": "Konstantin Zaytcev"
+      "name": "Konstantin Zaytcev",
+      "homepage": "https://zaytcev.com"
     }
   ],
   "config": {
@@ -14,7 +16,7 @@
     }
   },
   "require": {
-    "php": "^8.2"
+    "php": "^8.3"
   },
   "require-dev": {
     "dg/bypass-finals": "^1.3",
@@ -31,9 +33,6 @@
     }
   },
   "scripts": {
-    "app": [
-      "php bin/app.php --ansi"
-    ],
     "php-cs-fixer": "php-cs-fixer --config=.php-cs-fixer.php --allow-risky=yes",
     "lint": "phplint",
     "psalm": "psalm",

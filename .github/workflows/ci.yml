@@ -5,7 +5,7 @@ jobs:
         strategy:
             matrix:
                 operating-system: [ ubuntu-latest ]
-                php-versions: [ '8.2' ]
+                php-versions: [ '8.3' ]
         runs-on: ${{ matrix.operating-system }}
         steps:
             -   name: Checkout
@@ -14,11 +14,14 @@ jobs:
             -   name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '8.2'
+                    php-version: '8.3'
 
             -   name: Get composer cache directory
                 id: composer-cache
                 run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+            -   name: Validate composer.json and composer.lock
+                run: composer validate --strict
 
             -   name: Cache composer dependencies
                 uses: actions/cache@v3
@@ -34,7 +37,7 @@ jobs:
                 run: composer lint && composer php-cs-fixer fix -- --dry-run --diff
 
             -   name: Analyze
-                run: composer lint && composer psalm
+                run: composer psalm
 
             -   name: Test
                 run: composer test

@@ -2,12 +2,6 @@
 .env.*
 .phplint-cache
 
-# local file
-*.local.php
-
-# temp files dir
-/files/tmp
-
 # composer vendor dir
 /vendor
 

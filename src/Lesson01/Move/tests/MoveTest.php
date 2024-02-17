@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Lesson01\Move\tests;
 
 use App\Lesson01\Move\Movable;
-use App\Lesson01\Move\Move;
+use App\Lesson01\Move\MoveCommand;
 use App\Lesson01\Move\Vector;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ final class MoveTest extends TestCase
             ->method('setPosition')
             ->with(self::equalTo($targetVector));
 
-        $move = new Move($movable);
+        $move = new MoveCommand($movable);
         $move->execute();
     }
 
@@ -39,7 +39,7 @@ final class MoveTest extends TestCase
         $movable = $this->createMock(Movable::class);
         $movable->method('getPosition')->will(self::throwException(new Exception()));
 
-        $move = new Move($movable);
+        $move = new MoveCommand($movable);
         $move->execute();
     }
 
@@ -50,7 +50,7 @@ final class MoveTest extends TestCase
         $movable = $this->createMock(Movable::class);
         $movable->method('getVelocity')->will(self::throwException(new Exception()));
 
-        $move = new Move($movable);
+        $move = new MoveCommand($movable);
         $move->execute();
     }
 
@@ -63,7 +63,7 @@ final class MoveTest extends TestCase
         $movable->method('getVelocity')->willReturn(new Vector(-7, 3));
         $movable->method('setPosition')->will(self::throwException(new Exception()));
 
-        $move = new Move($movable);
+        $move = new MoveCommand($movable);
         $move->execute();
     }
 }
