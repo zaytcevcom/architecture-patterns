@@ -4,39 +4,26 @@ declare(strict_types=1);
 
 namespace App\Lesson05\Register\tests;
 
-use App\Lesson01\Command;
 use App\Lesson05\IoC\IoC;
 use App\Lesson05\Register\RegisterCommand;
-use Closure;
-use PHPUnit\Framework\MockObject\MockObject;
+use Exception;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @internal
  */
 final class RegisterCommandTest extends TestCase
 {
-    private MockObject $ioc;
-    private Command $command;
-
-    protected function setUp(): void
-    {
-        $this->ioc = $this->createMock(IoC::class);
-
-        $this->command = new RegisterCommand($this->ioc, 'test', static function () {
-            return new class() {};
-        });
-    }
-
+    /** @throws Exception */
     public function testExecute(): void
     {
-        $this->ioc->expects(self::once())
-            ->method('register')
-            ->with(
-                self::equalTo('test'),
-                self::isInstanceOf(Closure::class)
-            );
+        $command = new RegisterCommand('test', static function () {
+            return new stdClass();
+        });
+        $command->execute();
 
-        $this->command->execute();
+        $resolved = IoC::resolve('test');
+        self::assertInstanceOf(stdClass::class, $resolved);
     }
 }

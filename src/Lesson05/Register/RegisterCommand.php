@@ -5,22 +5,18 @@ declare(strict_types=1);
 namespace App\Lesson05\Register;
 
 use App\Lesson01\Command;
-use App\Lesson05\IoC\IoC;
+use App\Lesson05\IoC;
 
-/**
- * @template T of object
- */
 class RegisterCommand implements Command
 {
     public function __construct(
-        private readonly IoC $ioc,
         private readonly string $key,
-        /** @var callable(mixed ...$args):T */
+        /** @var callable(mixed ...$args):object */
         private $callback
     ) {}
 
     public function execute(): void
     {
-        $this->ioc->register($this->key, $this->callback);
+        IoC\IoC::register($this->key, $this->callback);
     }
 }

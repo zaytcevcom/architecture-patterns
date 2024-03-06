@@ -10,12 +10,11 @@ use App\Lesson05\IoC\IoC;
 readonly class CurrentScopeCommand implements Command
 {
     public function __construct(
-        private IoC $ioc,
         private string $scopeId
     ) {}
 
     public function execute(): void
     {
-        $this->ioc->setCurrentScope($this->scopeId);
+        IoC::setCurrentScope($this->scopeId);
     }
 }

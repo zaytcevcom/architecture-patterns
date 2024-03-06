@@ -14,25 +14,15 @@ use ReflectionProperty;
  */
 final class NewScopeCommandTest extends TestCase
 {
-    private IoC $ioc;
-
-    protected function setUp(): void
-    {
-        $this->ioc = new IoC();
-    }
-
-    /**
-     * @template T of object
-     */
     public function testNewScopeCommand(): void
     {
         $scopeId = 'testScope';
-        $command = new NewScopeCommand($this->ioc, $scopeId);
+        $command = new NewScopeCommand($scopeId);
         $command->execute();
 
         $scopeProp = new ReflectionProperty(IoC::class, 'scopes');
-        /** @var array<string, array<string, callable(mixed ...$args):T>> $scopes */
-        $scopes = $scopeProp->getValue($this->ioc);
+        /** @var array<string, array<string, callable(mixed ...$args):object>> $scopes */
+        $scopes = $scopeProp->getValue();
 
         self::assertArrayHasKey($scopeId, $scopes);
     }

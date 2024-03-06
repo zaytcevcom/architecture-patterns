@@ -13,23 +13,21 @@ use PHPUnit\Framework\TestCase;
  */
 final class CurrentScopeCommandTest extends TestCase
 {
-    protected IoC $ioc;
     protected CurrentScopeCommand $csc;
 
     protected function setUp(): void
     {
-        $this->ioc = new IoC();
-        $this->csc = new CurrentScopeCommand($this->ioc, 'newScope');
+        $this->csc = new CurrentScopeCommand('newScope');
 
         parent::setUp();
     }
 
     public function testExecute(): void
     {
-        self::assertNotEquals('newScope', $this->ioc->getCurrentScope());
+        self::assertNotEquals('newScope', IoC::getCurrentScope());
 
         $this->csc->execute();
 
-        self::assertEquals('newScope', $this->ioc->getCurrentScope());
+        self::assertEquals('newScope', IoC::getCurrentScope());
     }
 }
