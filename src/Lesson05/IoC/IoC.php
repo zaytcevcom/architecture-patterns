@@ -7,6 +7,7 @@ namespace App\Lesson05\IoC;
 use App\Lesson05\CurrentScope\CurrentScopeCommand;
 use App\Lesson05\NewScope\NewScopeCommand;
 use App\Lesson05\Register\RegisterCommand;
+use App\Lesson06\AdapterGenerator\AdapterGenerator;
 use Exception;
 
 class IoC
@@ -27,6 +28,9 @@ class IoC
         if ($key === 'Scopes.Current') {
             return self::resolveCurrentScope($args);
         }
+        if ($key === 'Adapter') {
+            return self::resolveAdapter($args);
+        }
 
         return self::resolveDependency($key, $args);
     }
@@ -46,9 +50,7 @@ class IoC
         self::$scopes[$scopeId] = [];
     }
 
-    /**
-     * @param callable(mixed ...$args):object $callback
-     */
+    /** @param callable(mixed ...$args):object $callback */
     public static function register(string $key, callable $callback): void
     {
         self::$scopes[self::getCurrentScope()][$key] = $callback;
@@ -95,6 +97,35 @@ class IoC
         }
 
         return new CurrentScopeCommand($args[0]);
+    }
+
+    /** @throws Exception */
+    private static function resolveAdapter(array $args): object
+    {
+        if (!isset($args[0], $args[1])) {
+            throw new Exception('Invalid arguments!');
+        }
+        if (!\is_string($args[0]) || !\is_object($args[1])) {
+            throw new Exception('Invalid type arguments!');
+        }
+
+        /** @var class-string $className */
+        $className = $args[0];
+
+        $dir = 'src/temp/adapters/';
+        $name = substr($className, 4) . 'Adapter';
+        $generator = new AdapterGenerator(
+            interface: $className,
+            path: str_replace('\\', '/', $dir . $name . '.php')
+        );
+        $generator->execute();
+
+        $adapter = '\App\\' . str_replace('/', '\\', $dir) . $name;
+        /** @var class-string $adapter */
+        $adapter = str_replace('src\\', '', $adapter);
+
+        /** @psalm-suppress MixedMethodCall */
+        return new $adapter($className, $args[1]);
     }
 
     /** @throws Exception */

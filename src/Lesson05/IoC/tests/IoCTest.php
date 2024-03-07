@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lesson05\IoC\tests;
 
 use App\Lesson01\Command;
+use App\Lesson01\Move\Movable;
 use App\Lesson05\IoC\IoC;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -62,5 +63,20 @@ final class IoCTest extends TestCase
 
         $this->expectException(Exception::class);
         IoC::resolve('test-not-resolved');
+    }
+
+    /** @throws Exception */
+    public function testResolveAdapter(): void
+    {
+        $obj = new stdClass();
+        $adapter = IoC::resolve('Adapter', Movable::class, $obj);
+
+        /** @var class-string $className */
+        $className = 'App\temp\adapters\Lesson01\Move\MovableAdapter';
+        self::assertInstanceOf($className, $adapter);
+
+        self::assertTrue(method_exists($adapter, 'getPosition'));
+        self::assertTrue(method_exists($adapter, 'setPosition'));
+        self::assertTrue(method_exists($adapter, 'getVelocity'));
     }
 }

@@ -50,7 +50,7 @@ return
             'blank_line_before_statement' => false,
             'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
 
-            'fopen_flags' => ['b_mode' => true],
+            // 'fopen_flags' => ['b_mode' => true],
 
             'php_unit_strict' => false,
             'php_unit_test_class_requires_covers' => false,
