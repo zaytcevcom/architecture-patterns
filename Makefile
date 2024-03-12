@@ -10,6 +10,7 @@ restart: down up
 
 
 # Linter and code-style
+composer: app-composer-validate
 lint: app-lint
 analyze: app-analyze
 cs-fix: app-cs-fix
@@ -17,7 +18,7 @@ test: app-test
 
 
 # Check all
-check: lint analyze test app-clear-adapters
+check: composer lint analyze test app-clear-adapters
 
 
 # Docker
@@ -62,6 +63,9 @@ app-composer-outdated:
 
 
 # Lint and analyze
+app-composer-validate:
+	docker compose run --rm php-cli composer validate --strict
+
 app-lint:
 	docker compose run --rm php-cli composer lint
 	docker compose run --rm php-cli composer php-cs-fixer fix -- --dry-run --diff
