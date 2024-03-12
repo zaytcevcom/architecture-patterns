@@ -17,7 +17,7 @@ test: app-test
 
 
 # Check all
-check: lint analyze test
+check: lint analyze test app-clear-adapters
 
 
 # Docker
@@ -39,6 +39,8 @@ docker-build:
 app-clear:
 	docker run --rm -v ${PWD}/:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
 
+app-clear-adapters:
+	docker run --rm -v ${PWD}/:/app -w /app alpine sh -c 'rm -rf src/temp/adapters/*'
 
 # Composer
 app-init: app-permissions app-composer-install

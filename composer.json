@@ -17,7 +17,8 @@
   },
   "require": {
     "php": "^8.3",
-    "monolog/monolog": "^3.5"
+    "monolog/monolog": "^3.5",
+    "ext-sysvsem": "*"
   },
   "require-dev": {
     "dg/bypass-finals": "^1.3",
