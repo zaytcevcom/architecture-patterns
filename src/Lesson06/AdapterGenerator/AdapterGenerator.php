@@ -184,7 +184,7 @@ class AdapterGenerator implements Command
     private function pathToNamespace(): string
     {
         $lastSlashPosition = strrpos($this->path, '/');
-        if (!$lastSlashPosition) {
+        if (false === $lastSlashPosition) {
             $lastSlashPosition = 0;
         }
 
