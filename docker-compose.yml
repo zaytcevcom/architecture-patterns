@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
     nginx:
-        container_name: music-nginx
+        container_name: nginx
         build:
             context: docker
             dockerfile: development/nginx/Dockerfile
@@ -16,7 +16,7 @@ services:
             - app-network
 
     php-fpm:
-        container_name: music-php-fpm
+        container_name: php-fpm
         build:
             context: docker
             dockerfile: development/php-fpm/Dockerfile

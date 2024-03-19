@@ -19,6 +19,7 @@
         "php": "^8.3",
         "ext-sysvsem": "*",
         "laminas/laminas-config-aggregator": "^1.14",
+        "league/oauth2-server": "^8.5",
         "monolog/monolog": "^3.5",
         "php-di/php-di": "^7.0",
         "slim/psr7": "^1.6",

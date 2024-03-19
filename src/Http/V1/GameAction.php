@@ -7,6 +7,7 @@ namespace App\Http\V1;
 use App\Components\Serializer\Denormalizer;
 use App\Helpers\OpenApi\ResponseSuccessful;
 use App\Helpers\OpenApi\Security;
+use App\Http\Middleware\Identity\Authenticate;
 use App\Http\Response\JsonResponse;
 use App\Lesson01\Command;
 use App\Lesson05\IoC\IoC;
@@ -23,7 +24,7 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
     path: '/game',
     description: 'Взаимодействие с игровым сервером',
     summary: 'Взаимодействие с игровым сервером',
-    security: [Security::API_KEY],
+    security: [Security::BEARER_AUTH],
     requestBody: new OA\RequestBody(
         required: true,
         content: new OA\JsonContent(
@@ -64,6 +65,8 @@ final readonly class GameAction implements RequestHandlerInterface
     /** @throws Exception|ExceptionInterface */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $identity = Authenticate::getIdentity($request);
+
         $data = $request->getParsedBody();
 
         $command = $this->denormalizer->denormalize(
@@ -75,6 +78,10 @@ final readonly class GameAction implements RequestHandlerInterface
 
         if (!\is_int($gameId)) {
             throw new Exception('Invalid gameId');
+        }
+
+        if ($gameId !== $identity->gameId) {
+            throw new Exception('Access denied for this game!');
         }
 
         $this->addedToQueue($gameId, $command);
