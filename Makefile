@@ -18,7 +18,7 @@ test: app-test
 
 
 # Check all
-check: composer lint analyze test app-clear-adapters
+check: composer lint analyze test app-clear-temp
 
 
 # Docker
@@ -40,8 +40,8 @@ docker-build:
 app-clear:
 	docker run --rm -v ${PWD}/:/app -w /app alpine sh -c 'rm -rf var/cache/* var/log/* var/test/*'
 
-app-clear-adapters:
-	docker run --rm -v ${PWD}/:/app -w /app alpine sh -c 'rm -rf src/temp/adapters/*'
+app-clear-temp:
+	docker run --rm -v ${PWD}/:/app -w /app alpine sh -c 'rm -rf src/temp/adapters/* src/temp/logs/*'
 
 # Composer
 app-init: app-permissions app-composer-install
