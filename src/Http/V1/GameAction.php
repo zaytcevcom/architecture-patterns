@@ -12,7 +12,7 @@ use App\Http\Response\JsonResponse;
 use App\Lesson01\Command;
 use App\Lesson05\IoC\IoC;
 use App\Lesson07\SafeQueue\Receiver;
-use App\Lesson08\Interpret\InterpretCommand;
+use App\Lesson13\InterpretWithPermission\InterpretWithPermissionCommand;
 use Exception;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
@@ -70,8 +70,8 @@ final readonly class GameAction implements RequestHandlerInterface
         $data = $request->getParsedBody();
 
         $command = $this->denormalizer->denormalize(
-            data: $data,
-            type: InterpretCommand::class
+            data: array_merge((array)$data, ['userId' => $identity->id]),
+            type: InterpretWithPermissionCommand::class
         );
 
         $gameId = $data['gameId'] ?? null;
@@ -90,7 +90,7 @@ final readonly class GameAction implements RequestHandlerInterface
     }
 
     /** @throws Exception */
-    private function addedToQueue(int $gameId, InterpretCommand $command): void
+    private function addedToQueue(int $gameId, InterpretWithPermissionCommand $command): void
     {
         /** @var Command $commandScopesCurrent */
         $commandScopesCurrent = IoC::resolve('Scopes.Current', 'game-' . $gameId);
